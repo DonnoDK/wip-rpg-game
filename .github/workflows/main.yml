@@ -17,10 +17,10 @@ jobs:
         run: |
           cd ..
           wget https://github.com/love2d/love/releases/download/11.5/love-11.5-win64.zip -O love.zip
-          unzip love.zip -d love
+          unzip love.zip
       - name: fuse love.exe and game.love
         run: |
-          cat ../love/love.exe game.love > game.exe
+          cat ../love*/love.exe game.love > game.exe
       - name: List files in the repository
         run: |
           cd ..
