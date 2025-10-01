@@ -20,8 +20,15 @@ jobs:
           unzip love.zip
       - name: fuse love.exe and game.love
         run: |
-          cat ../love*/love.exe game.love > game.exe
-      - name: List files in the repository
+          cat ../love*/love.exe game.love > ../love*/game.exe
+      - name: collect files
         run: |
           cd ..
+          mkdir game
+          cd game
+          cp ../love*/game.exe .
+          cp ../love*/*.dll .
+      - name: list files in game
+        run: |
+          cd ../game
           ls
