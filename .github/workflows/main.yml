@@ -23,17 +23,17 @@ jobs:
           cat ../love*/love.exe game.love > game.exe
       - name: collect files
         run: |
-          mkdir ../game
-          mv game.exe ../game/game.exe
-          cp ../love*/*.dll ../game/
+          mkdir game
+          mv game.exe ./game/game.exe
+          cp ../love*/*.dll ./game/
       - name: list files in game
         run: |
-          cd ../game
+          cd game
           ls
       - uses: actions/upload-artifact@v4
         with:
-          name: game
-          path: ../game/*.*
+          name: game.zip
+          path: game/*.*
           if-no-files-found: 'error'
 
           # If true, an artifact with a matching name will be deleted before a new one is uploaded.
