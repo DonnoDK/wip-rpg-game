@@ -24,8 +24,8 @@ jobs:
       - name: collect files
         run: |
           mkdir ../game
-          mv game.exe ./game/game.exe
-          cp ../love*/*.dll ./game/
+          mv game.exe ../game/game.exe
+          cp ../love*/*.dll ../game/
       - name: list files in game
         run: |
           cd ../game
