@@ -7,6 +7,20 @@ jobs:
     steps:
       - name: code checkout
         uses: actions/checkout@v5
+      - name: remove .git to prepare packaging
+        run: |
+          rm -rf .git .github
+      - name: create game.love file
+        run: |
+          zip -9 -r game.love .
+      - name: download love2d
+        run: |
+          cd ..
+          wget https://github.com/love2d/love/releases/download/11.5/love-11.5-win64.zip -O love.zip
+          unzip love.zip -d love
+      - name: fuse love.exe and game.love
+        run: |
+          cat ../love/love.exe game.love > game.exe
       - name: List files in the repository
         run: |
           cd ..
