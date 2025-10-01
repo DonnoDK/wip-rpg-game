@@ -2,7 +2,7 @@ name: wip game CI
 run-name: ${{ github.actor }} is testing out GitHub Actions
 on: [push]
 jobs:
-  build:
+  build-windows:
     runs-on: ubuntu-latest
     steps:
       - name: code checkout
@@ -30,3 +30,14 @@ jobs:
         run: |
           cd ../game
           ls
+      - uses: actions/upload-artifact@v4
+        with:
+          name: game
+          path: ../game/*.*
+          if-no-files-found: error
+
+          # If true, an artifact with a matching name will be deleted before a new one is uploaded.
+          # If false, the action will fail if an artifact for the given name already exists.
+          # Does not fail if the artifact does not exist.
+          # Optional. Default is 'false'
+          overwrite:
