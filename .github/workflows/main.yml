@@ -1,5 +1,5 @@
 name: wip game CI
-run-name: ${{ github.actor }} is testing out GitHub Actions
+run-name: building wip game
 on: [push]
 jobs:
   build-windows:
@@ -9,9 +9,11 @@ jobs:
         uses: actions/checkout@v5
       - name: remove .git to prepare packaging
         run: |
-          rm -rf .git .github
+          ls .git*
+          rm -rf .git*
       - name: create game.love file
         run: |
+          ls
           zip -9 -r game.love .
       - name: download love2d
         run: |
