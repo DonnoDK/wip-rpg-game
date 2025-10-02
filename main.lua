@@ -43,6 +43,9 @@ function love.load()
    love.graphics.setLineStyle('rough')
    love.graphics.setCanvas()
 
+
+   gamestate.tileset = love.graphics.newImage("gfx/urizen_onebit_tileset__v2d0.png")
+
    resize()
 end
 
@@ -51,6 +54,7 @@ end
 function love.draw()
    love.graphics.setCanvas(gamestate.canvas)
    love.graphics.clear(0.3,0.1,0.4)
+   love.graphics.draw(gamestate.tileset, 0, 0)
    love.graphics.push()
    love.graphics.translate(200,200)
 
@@ -60,15 +64,16 @@ function love.draw()
 
    love.graphics.pop()
    love.graphics.print(gamestate.tick)
+
+
+
+
    love.graphics.setCanvas()
-
-
    -- do proper translate and scale before drawing to main window
    local s = gamestate.window.scale
    love.graphics.translate(gamestate.window.width/2-((gamestate.window.internalResolutionWidth/2)*s),
                            gamestate.window.height/2-((gamestate.window.internalResolutionHeight/2)*s))
    love.graphics.scale(s,s)
-
    love.graphics.draw(gamestate.canvas)
 end
 
