@@ -1,6 +1,8 @@
 name: wip game CI
 run-name: building wip game
 
+on: workflow_dispatch
+
 jobs:
   build-windows:
     runs-on: ubuntu-latest
