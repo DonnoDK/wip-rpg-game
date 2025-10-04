@@ -9,14 +9,16 @@ jobs:
     steps:
       - name: code checkout
         uses: actions/checkout@v5
-      - name: remove .git to prepare packaging
-        run: |
-          ls .git*
-          rm -rf .git*
+
+      #- name: remove .git to prepare packaging
+      #  run: |
+      #    ls .git*
+      #    rm -rf .git*
+          
       - name: create game.love file
         run: |
           ls
-          zip -9 -r game.love .
+          zip -9 -r game.love ./main.lua ./gfx
       - name: download love2d
         run: |
           cd ..
