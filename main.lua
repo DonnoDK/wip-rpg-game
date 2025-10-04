@@ -1,31 +1,33 @@
 
-
-gamestate = {
-   player = {
-      controls = {
-         keys = {}
-      },
-      position = {x = 200, y = 200},
-      direction = {x = 0, y = 0},
-      acceleration = {x = 0, y = 0}
-   },
-   tick = 0,
-   canvas = {},
-   window = {
-      width = 1920,
-      height = 1080,
-      internalResolutionWidth = 1920/4,
-      internalResolutionHeight = 1080/4,
-      scale = 2
+function new_gamestate(width, height, scale)
+   return {
+	  player = {
+		 controls = {
+			keys = {}
+		 },
+		 position = {x = 200, y = 200},
+		 direction = {x = 0, y = 0},
+		 acceleration = {x = 0, y = 0}
+	  },
+	  tick = 0,
+	  canvas = {},
+	  window = {
+		 width = width,
+		 height = height,
+		 internalResolutionWidth = width/scale,
+		 internalResolutionHeight = height/scale,
+		 scale = scale
+	  }
    }
-}
+end
 
+gamestate = new_gamestate(1920, 1080, 4)
 
 function resize()
    w, h = love.graphics.getDimensions()
    gamestate.window.width = w
    gamestate.window.height = h
-   gamestate.window.scale = math.min(w/gamestate.window.internalResolutionWidth,h/gamestate.window.internalResolutionHeight)
+   gamestate.window.aspect_ratio = math.min(w/gamestate.window.internalResolutionWidth,h/gamestate.window.internalResolutionHeight)
 end
 
 
@@ -53,8 +55,16 @@ end
 
 function love.draw()
    love.graphics.setCanvas(gamestate.canvas)
-   love.graphics.clear(0.3,0.1,0.4)
-   love.graphics.draw(gamestate.tileset, 0, 0)
+   love.graphics.clear(0.1,0.2,0.1)
+
+   local t = math.floor(gamestate.tick / 10)
+   local x_index = t % 50
+   local y = (x_index + (12* x_index))
+
+   quad = love.graphics.newQuad(2,y+2, 12, 12, gamestate.tileset)
+   love.graphics.draw(gamestate.tileset, quad, 50, 50)
+   love.graphics.draw(gamestate.tileset, quad, 50+12, 50)
+
    love.graphics.push()
    love.graphics.translate(200,200)
 
@@ -70,7 +80,7 @@ function love.draw()
 
    love.graphics.setCanvas()
    -- do proper translate and scale before drawing to main window
-   local s = gamestate.window.scale
+   local s = gamestate.window.aspect_ratio
    love.graphics.translate(gamestate.window.width/2-((gamestate.window.internalResolutionWidth/2)*s),
                            gamestate.window.height/2-((gamestate.window.internalResolutionHeight/2)*s))
    love.graphics.scale(s,s)
