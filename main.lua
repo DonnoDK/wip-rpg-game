@@ -21,7 +21,7 @@ function new_gamestate(width, height, scale)
    }
 end
 
-gamestate = new_gamestate(1920, 1080, 4)
+gamestate = new_gamestate(1920, 1080, 2)
 
 function resize()
    w, h = love.graphics.getDimensions()
@@ -35,6 +35,19 @@ function love.resize()
    resize()
 end
 
+function load_tileset(name, tile_width, tile_height, columns, rows, margin, padding)
+   local img = love.graphics.newImage(name)
+   return {
+	  img = img,
+	  tile_width = tile_width,
+	  tile_height = tile_height,
+	  columns = columns,
+	  rows = rows,
+	  margin = margin,
+	  padding = padding
+   }
+end
+
 function love.load()
    love.window.setMode(gamestate.window.width, gamestate.window.height, {resizable = true, vsync=1})
    love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -46,33 +59,43 @@ function love.load()
    love.graphics.setCanvas()
 
 
-   gamestate.tileset = love.graphics.newImage("gfx/urizen_onebit_tileset__v2d0.png")
+   gamestate.tileset = load_tileset("gfx/urizen_onebit_tileset__v2d0.png", 12, 12, 206, 50, 1, 1)
 
    resize()
 end
 
-
+function quad_for_tileset_and_index(tileset, x_index, y_index)
+   local y = (y_index + (tileset.tile_height * y_index))
+   local x = (x_index + (tileset.tile_width  * x_index))
+   return love.graphics.newQuad(tileset.padding+x, tileset.padding+y, tileset.tile_width, tileset.tile_height, tileset.img)
+end
 
 function love.draw()
    love.graphics.setCanvas(gamestate.canvas)
    love.graphics.clear(0.1,0.2,0.1)
 
-   local t = math.floor(gamestate.tick / 10)
-   local x_index = t % 50
-   local y = (x_index + (12* x_index))
+   local t = math.floor(gamestate.tick / 1)
 
-   quad = love.graphics.newQuad(2,y+2, 12, 12, gamestate.tileset)
-   love.graphics.draw(gamestate.tileset, quad, 50, 50)
-   love.graphics.draw(gamestate.tileset, quad, 50+12, 50)
+   for y = 0, 10, 1 do
+	  for x = 0, 100, 1 do
+		 local q_x = (x + t) % gamestate.tileset.columns
+		 local q_y = y --(y + t) % gamestate.tileset.rows
+		 quad = quad_for_tileset_and_index(gamestate.tileset, q_x, q_y)
+		 love.graphics.draw(gamestate.tileset.img, quad, (x*12), (y*12))
+	  end
+   end
+
+
 
    love.graphics.push()
    love.graphics.translate(200,200)
-
    love.graphics.rotate(gamestate.tick/200)
-
    love.graphics.rectangle("fill", -50, -50, 100, 100)
-
    love.graphics.pop()
+
+
+
+
    love.graphics.print(gamestate.tick)
 
 
