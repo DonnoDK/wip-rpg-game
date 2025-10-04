@@ -9,33 +9,33 @@ jobs:
     steps:
       - name: code checkout
         uses: actions/checkout@v5
-
-      #- name: remove .git to prepare packaging
-      #  run: |
-      #    ls .git*
-      #    rm -rf .git*
           
       - name: create game.love file
         run: |
           ls
           zip -9 -r game.love ./main.lua ./gfx
+          
       - name: download love2d
         run: |
           cd ..
           wget https://github.com/love2d/love/releases/download/11.5/love-11.5-win64.zip -O love.zip
           unzip love.zip
+          
       - name: fuse love.exe and game.love
         run: |
           cat ../love*/love.exe game.love > game.exe
+          
       - name: collect files
         run: |
           mkdir game
           mv game.exe ./game/game.exe
           cp ../love*/*.dll ./game/
+          
       - name: list files in game
         run: |
           cd game
           ls
+          
       - uses: actions/upload-artifact@v4
         with:
           name: game
@@ -50,11 +50,8 @@ jobs:
 
       - name: Create a Release
         uses: elgohr/Github-Release-Action@v5
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           title: MyReleaseMessage    
-
       
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
