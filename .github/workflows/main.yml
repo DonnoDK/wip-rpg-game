@@ -1,6 +1,6 @@
 name: wip game CI
 run-name: building wip game
-on: [push]
+
 jobs:
   build-windows:
     runs-on: ubuntu-latest
